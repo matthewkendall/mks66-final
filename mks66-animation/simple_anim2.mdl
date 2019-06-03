@@ -1,0 +1,10 @@
+frames 20 
+basename simple_20 
+push
+move 250 250 0
+scale 2 2 2 bigenator
+rotate y 360 
+rotate z 360 
+torus 0 0 0 75 125
+vary bigenator 0 9 0 1
+vary bigenator 10 19 1 0
