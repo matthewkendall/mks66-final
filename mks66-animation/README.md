@@ -1,1 +1,0 @@
-# mks66-animation
