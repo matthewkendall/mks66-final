@@ -148,3 +148,40 @@ def convert_xy(polygons, i, x0, y0, z0):
     v = m.dot(v)
 
     return v[0][0],v[1][0]
+
+# returns a pair of homogenized coordinates u,v according to
+# box location and dimentions given pair of homogenized coordinates x,y
+def convert_uv(x, y, l, w, h, box_num):
+    box_x = box_num % 4
+    box_y = box_num / 4
+
+    dx1,dx2 = (h * 1.0) / (2*l + 2*h), (l * 1.0) / (2*l + 2*h)
+    dx3,dx4 = dx1,dx2
+    dy1,dy2,dy3 = (h * 1.0) / (2*h + w), (w * 1.0) / (2*h + w), (h * 1.0) / (2*h + w)
+
+    if box_x == 0:
+        scale_x = dx1
+        move_x = 0
+    elif box_x == 1:
+        scale_x = dx2
+        move_x = dx1
+    elif box_x == 2:
+        scale_x = dx3
+        move_x = dx_1 + dx_2
+    else:
+        scale_x = dx_4
+        move_x = dx_1 + dx_2 + dx_3
+    if box_y == 0:
+        scale_y = dy1
+        move_y = 0
+    elif box_y == 1:
+        scale_y = dy2
+        move_y = dy1
+    else:
+        scale_y = dy3
+        move_y = dy1 + dy2
+
+    u = x * scale_x + move_x
+    v = y * scale_y + move_y
+
+    return u,v 

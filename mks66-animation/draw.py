@@ -87,7 +87,6 @@ def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, ref
         normal = calculate_normal(polygons, point)[:]
 
         # backface culling
-        # print normal
         if normal[2] > 0:
 
             color = get_lighting(normal, view, ambient, light, symbols, reflect )
