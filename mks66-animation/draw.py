@@ -92,28 +92,6 @@ def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, ref
 
             color = get_lighting(normal, view, ambient, light, symbols, reflect )
             scanline_convert(polygons, point, screen, zbuffer, color)
-
-            # draw_line( int(polygons[point][0]),
-            #            int(polygons[point][1]),
-            #            polygons[point][2],
-            #            int(polygons[point+1][0]),
-            #            int(polygons[point+1][1]),
-            #            polygons[point+1][2],
-            #            screen, zbuffer, color)
-            # draw_line( int(polygons[point+2][0]),
-            #            int(polygons[point+2][1]),
-            #            polygons[point+2][2],
-            #            int(polygons[point+1][0]),
-            #            int(polygons[point+1][1]),
-            #            polygons[point+1][2],
-            #            screen, zbuffer, color)
-            # draw_line( int(polygons[point][0]),
-            #            int(polygons[point][1]),
-            #            polygons[point][2],
-            #            int(polygons[point+2][0]),
-            #            int(polygons[point+2][1]),
-            #            polygons[point+2][2],
-            #            screen, zbuffer, color)
         point+= 3
 
 
@@ -122,25 +100,22 @@ def add_box( polygons, x, y, z, width, height, depth ):
     y1 = y - height
     z1 = z - depth
 
-    #front
+    #front: 1
     add_polygon(polygons, x, y, z, x1, y1, z, x1, y, z)
     add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z)
-
-    #back
+    #back: 9
     add_polygon(polygons, x1, y, z1, x, y1, z1, x, y, z1)
     add_polygon(polygons, x1, y, z1, x1, y1, z1, x, y1, z1)
-
-    #right side
+    #right side: 6
     add_polygon(polygons, x1, y, z, x1, y1, z1, x1, y, z1)
     add_polygon(polygons, x1, y, z, x1, y1, z, x1, y1, z1)
-    #left side
+    #left side: 4
     add_polygon(polygons, x, y, z1, x, y1, z, x, y, z)
     add_polygon(polygons, x, y, z1, x, y1, z1, x, y1, z)
-
-    #top
+    #top: 5
     add_polygon(polygons, x, y, z1, x1, y, z, x1, y, z1)
     add_polygon(polygons, x, y, z1, x, y, z, x1, y, z)
-    #bottom
+    #bottom: 7
     add_polygon(polygons, x, y1, z, x1, y1, z1, x1, y1, z)
     add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1)
 

@@ -1,4 +1,5 @@
 import math
+import numpy as np
 from display import *
 
 
@@ -116,3 +117,34 @@ def calculate_normal(polygons, i):
     N[2] = A[0] * B[1] - A[1] * B[0]
 
     return N
+
+# converts a point in triangle back to standard basis representation
+# coordinates in 3D are x0, y0, z0
+def convert_xy(polygons, i, x0, y0, z0):
+    BOT = 0
+    TOP = 2
+    MID = 1
+    points = [ (polygons[i][0], polygons[i][1], polygons[i][2]),
+               (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]),
+               (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]) ]
+
+    points.sort(key = lambda x: x[1])
+    A = [0, 0, 0]
+    B = [0, 0, 0]
+
+    A[0] = points[BOT][0] - points[MID][0]
+    A[1] = points[BOT][1] - points[MID][1]
+    A[2] = points[BOT][2] - points[MID][2]
+
+    B[0] = points[TOP][0] - points[MID][0]
+    B[1] = points[TOP][1] - points[MID][1]
+    B[2] = points[TOP][2] - points[MID][2]
+
+    m = np.matrix([ [A[0], B[0], 0],
+                    [A[1], B[1], 0],
+                    [A[2], B[2], 1]])
+    m = m.I.getA()
+    v = np.array([ [x0], [y0], [z0]])
+    v = m.dot(v)
+
+    return v[0][0],v[1][0]

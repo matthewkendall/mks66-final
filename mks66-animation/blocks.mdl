@@ -10,7 +10,5 @@ rotate y 30
 sphere 0 0 0 10
 box brown 0 0 0 50 50 50
 
-
-
 display
 save blocks.png

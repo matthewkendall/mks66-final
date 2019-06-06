@@ -146,7 +146,7 @@ def run(filename):
         coords1 = []
 
         for command in commands:
-            # print command
+            print command
             c = command['op']
             args = command['args']
             knob_value = 1
@@ -161,7 +161,9 @@ def run(filename):
                         args[0], args[1], args[2],
                         args[3], args[4], args[5])
                 matrix_mult( stack[-1], tmp )
+                # if statement if texture is being applied
                 draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                print("TMP:", tmp)
                 tmp = []
                 reflect = '.white'
             elif c == 'sphere':
