@@ -163,18 +163,16 @@ def run(filename):
             if c == 'box':
                 if command['constants']:
                     reflect = command['constants']
-                    # text_dict= command['texture']
-                    # if there is a texture save it into a dictionary
-                        # maybe all textures have names TEXTURE_A
-                        # and we can check for that
+                    # texture = command['texture']
                 add_box(tmp,
                         args[0], args[1], args[2],
                         args[3], args[4], args[5])
                 matrix_mult( stack[-1], tmp )
                 # if there is a texture, apply it here
-                # if texture: draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect, texture)
-                # else: draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
-                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                if is_texture:
+                    draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect, texture)
+                else:
+                    draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
                 tmp = []
                 reflect = '.white'
             elif c == 'sphere':

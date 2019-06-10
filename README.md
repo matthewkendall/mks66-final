@@ -24,7 +24,5 @@ python3
 Texture maps to mesh
 
 ## TO-DO
-- Figure out parsing of texture
-- Organize functions a little better: maybe make a texture.py?
-- Figure out whether texture stuff occurs in @draw_polygons or @scanline_convert
-  - Organize functions in draw.py better
+- Make sure (0,0) in top left is what we want for parser
+- Modify @p_command_box in mdl.py
