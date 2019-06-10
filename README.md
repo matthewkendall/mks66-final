@@ -21,3 +21,9 @@ python3
 
 ## Stretch Goals
 Texture maps to mesh
+
+## TO-DO
+- Figure out parsing of texture
+- Organize functions a little better: maybe make a texture.py?
+- Figure out whether texture stuff occurs in @draw_polygons or @scanline_convert
+  - Organize functions in draw.py better
