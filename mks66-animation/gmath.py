@@ -149,16 +149,27 @@ def convert_xy(polygons, i, x0, y0, z0):
 
     return v[0][0],v[1][0]
 
+# this function converts each triangle from the box into the correct
+# location for the texture map
 # returns a pair of homogenized coordinates u,v according to
-# box location and dimentions given pair of homogenized coordinates x,y
-def convert_uv(x, y, l, w, h, box_num):
+# box location [box_num, BOT/TOP]
+# and dimentions given pair of homogenized coordinates x,y
+def box_convert_uv(x, y, l, w, h, box_pair):
+    box_num = box_pair[0]
+    box_loc = box_pair[1]
+    BOT = 0
+    TOP = 1
     box_x = box_num % 4
-    box_y = box_num / 4
+    box_y = box_num // 4
 
     dx1,dx2 = (h * 1.0) / (2*l + 2*h), (l * 1.0) / (2*l + 2*h)
     dx3,dx4 = dx1,dx2
     dy1,dy2,dy3 = (h * 1.0) / (2*h + w), (w * 1.0) / (2*h + w), (h * 1.0) / (2*h + w)
 
+    move_x = 0
+    move_y = 0
+
+    # determine correct scaling and moving
     if box_x == 0:
         scale_x = dx1
         move_x = 0
@@ -167,10 +178,10 @@ def convert_uv(x, y, l, w, h, box_num):
         move_x = dx1
     elif box_x == 2:
         scale_x = dx3
-        move_x = dx_1 + dx_2
+        move_x = dx1 + dx2
     else:
-        scale_x = dx_4
-        move_x = dx_1 + dx_2 + dx_3
+        scale_x = dx4
+        move_x = dx1 + dx2 + dx3
     if box_y == 0:
         scale_y = dy1
         move_y = 0
@@ -181,7 +192,28 @@ def convert_uv(x, y, l, w, h, box_num):
         scale_y = dy3
         move_y = dy1 + dy2
 
+    # do necessary reflections
+    if box_num in {1,5,7,9}:
+        if box_loc == TOP:
+            x = 1-x
+            y = 1-y
+    elif box_num in {4,6}:
+        # reflect about x=1/2
+        x = 1-x
+        if box_loc == TOP:
+            x = 1-x
+            y = 1-y
+    else:
+        return "Not correct box number (%d) % (box_num)"
+
     u = x * scale_x + move_x
     v = y * scale_y + move_y
 
-    return u,v 
+    return u,v
+
+# tests
+# BOT,TOP = 0,1
+# x,y = 0.5,0.5
+# l,w,h = 1,1,1
+# box_pair = [7,BOT]
+# box_convert_uv(x,y,l,w,h, box_pair)
