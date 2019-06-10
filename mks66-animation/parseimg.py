@@ -34,7 +34,7 @@ def get2DPicData(img_file): #possibly wrong?
             curr_lst= [] #reset
             curr_lst.append(tup)
             cnt=1
-        elif len(dPixels)== height-1 and cnt == width -1:
+        elif len(dPixels)== height-1 and cnt == width -1: #final case
             dPixels.append(curr_lst)
             break
         else:
@@ -43,17 +43,30 @@ def get2DPicData(img_file): #possibly wrong?
 
     return dPixels
 
-def getUVScale(img_file):
-    pass
 def getUVDict(img_file):
-    pass
+    '''Returns dict where key= [u,v] and value= (R,G,B)'''
+    width,height= getPicSize(img_file) #serve as step values
+    uv_dict={}
+    dPixels= get2DPicData(img_file)
 
+    for r in range(height): #tracking row currently on
+        for c in range(width): #tracking column currently on
+            uv=(r/height,c/width)
+            uv_dict[uv]= dPixels[r-1][c-1]
+
+    return uv_dict
+
+
+'''
+Test Area
+'''
 #print(str(getPicSize('test.jpg')))
 #print(str(len(getPicData('test.jpg'))))
 #print("getting tiny dimensions"+str(getPicSize('tiny.png')))
-tiny = get2DPicData('tiny.jpeg')
+#tiny = get2DPicData('tiny.jpeg')
 #print(str(tiny))
-print(str(len(tiny))) #rows
-print(str(len(tiny[0]))) #columns
+#print(str(len(tiny))) #rows
+#print(str(len(tiny[0]))) #columns
+print(str(len(getUVDict('tiny.jpeg'))))
 #print(str(len(get2DPicData('test.jpg')))) # rows
 #print(str(len(get2DPicData('test.jpg')[0]))) #columns
