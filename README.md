@@ -13,5 +13,11 @@ Team Malleks
   - Phase 3: Sphere
 
 
+## Required Packages
+numpy: for inverse matrices
+
+## Language
+python3
+
 ## Stretch Goals
 Texture maps to mesh
