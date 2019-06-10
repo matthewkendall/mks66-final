@@ -50,8 +50,10 @@ def getUVDict(img_file):
     dPixels= get2DPicData(img_file)
 
     for r in range(height): #tracking row currently on
+        #print(str(r))
         for c in range(width): #tracking column currently on
-            uv=(r/height,c/width)
+            uv=((r+1)/height,(c+1)/width)
+            #print(str(uv))
             uv_dict[uv]= dPixels[r-1][c-1]
 
     return uv_dict
