@@ -9,6 +9,7 @@ Team Malleks
 ## Core Features
 - Texture Maps
   - Phase 1: Mapping to rectangular prism
+    - Possibly combine (R,G,B) value of texture map with lighting
   - Phase 2: Cylinder
   - Phase 3: Sphere
 

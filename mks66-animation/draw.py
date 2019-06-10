@@ -1,24 +1,56 @@
 from display import *
 from matrix import *
 from gmath import *
+from texture import *
 
-def draw_scanline(x0, z0, x1, z1, y, screen, zbuffer, color):
-    if x0 > x1:
-        tx = x0
-        tz = z0
-        x0 = x1
-        z0 = z1
-        x1 = tx
-        z1 = tz
+global is_texture # need to figure out how to use this var
+global box_prop
+global box_num
+global box_dim
+global is_box
+
+is_texture = False
+
+# draws scanline in the correct order
+# and retrieves color if necessary
+def draw_scanline(x0, z0, x1, z1, y, screen, zbuffer, color, polygons, i):
+    dist = abs(x1-x0)
+    if x0 < x1:
+        delta_x = 1
+    else:
+        delta_x = -1
 
     x = x0
     z = z0
     delta_z = (z1 - z0) / (x1 - x0 + 1) if (x1 - x0 + 1) != 0 else 0
 
-    while x <= x1:
+    while dist >= 0:
+        if is_texture:
+            u,v = get_uv(x, y, z)
+            color = get_color(u, v)
+
         plot(screen, zbuffer, color, x, y, z)
-        x+= 1
+        x+= delta_x
         z+= delta_z
+        dist -= 1
+
+# def draw_scanline(x0, z0, x1, z1, y, screen, zbuffer, color):
+#     if x0 > x1:
+#         tx = x0
+#         tz = z0
+#         x0 = x1
+#         z0 = z1
+#         x1 = tx
+#         z1 = tz
+#
+#     x = x0
+#     z = z0
+#     delta_z = (z1 - z0) / (x1 - x0 + 1) if (x1 - x0 + 1) != 0 else 0
+#
+#     while x <= x1:
+#         plot(screen, zbuffer, color, x, y, z)
+#         x+= 1
+#         z+= delta_z
 
 def scanline_convert(polygons, i, screen, zbuffer, color):
     flip = False
@@ -61,8 +93,9 @@ def scanline_convert(polygons, i, screen, zbuffer, color):
             x1 = points[MID][0]
             z1 = points[MID][2]
 
-        #draw_line(int(x0), y, z0, int(x1), y, z1, screen, zbuffer, color)
-        draw_scanline(int(x0), z0, int(x1), z1, y, screen, zbuffer, color)
+        # look into the difference
+        # draw_line(int(x0), y, z0, int(x1), y, z1, screen, zbuffer, color)
+        draw_scanline(int(x0), z0, int(x1), z1, y, screen, zbuffer, color, polygons, i)
         x0+= dx0
         z0+= dz0
         x1+= dx1
@@ -76,7 +109,7 @@ def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x1, y1, z1)
     add_point(polygons, x2, y2, z2)
 
-def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, reflect):
+def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, reflect, texture=None):
     if len(polygons) < 2:
         print('Need at least 3 points to draw')
         return
@@ -88,33 +121,54 @@ def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, ref
 
         # backface culling
         if normal[2] > 0:
+            if texture:
+                texture_scanline(polygons, point, screen, zbuffer, texture)
+            else:
+                color = get_lighting(normal, view, ambient, light, symbols, reflect )
+                scanline_convert(polygons, point, screen, zbuffer, color)
 
-            color = get_lighting(normal, view, ambient, light, symbols, reflect )
-            scanline_convert(polygons, point, screen, zbuffer, color)
         point+= 3
 
 
 def add_box( polygons, x, y, z, width, height, depth ):
+    is_box = True
+    box_dim = [width, height, depth]
     x1 = x + width
     y1 = y - height
     z1 = z - depth
 
+    # cycle thru box_num and bottom/top
+    box_pairs = [
+        [1,TOP], [1,BOT],
+        [9,TOP], [9,BOT],
+        [6,TOP], [6,BOT],
+        [4,TOP], [4,BOT],
+        [5,TOP], [5,BOT],
+        [7,TOP], [7,BOT],
+    ]
+
     #front: 1
+    box_num = 1
     add_polygon(polygons, x, y, z, x1, y1, z, x1, y, z) # TOP
     add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z) # BOT
     #back: 9
+    box_num = 9
     add_polygon(polygons, x1, y, z1, x, y1, z1, x, y, z1) # TOP
     add_polygon(polygons, x1, y, z1, x1, y1, z1, x, y1, z1) # BOT
     #right side: 6
+    box_num = 6
     add_polygon(polygons, x1, y, z, x1, y1, z1, x1, y, z1) # TOP AND FLIP
     add_polygon(polygons, x1, y, z, x1, y1, z, x1, y1, z1) # BOT AND FLIP
     #left side: 4
+    box_num = 4
     add_polygon(polygons, x, y, z1, x, y1, z, x, y, z) # TOP AND FLIP
     add_polygon(polygons, x, y, z1, x, y1, z1, x, y1, z) # BOT AND FLIP
     #top: 5
+    box_num = 5
     add_polygon(polygons, x, y, z1, x1, y, z, x1, y, z1) # TOP
     add_polygon(polygons, x, y, z1, x, y, z, x1, y, z) # BOT
     #bottom: 7
+    box_num = 7
     add_polygon(polygons, x, y1, z, x1, y1, z1, x1, y1, z) # TOP
     add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1) # BOT
 

@@ -14,41 +14,41 @@ tokens = (
     "AMBIENT",
     "TORUS",
     "SPHERE",
-    "BOX", 
-    "LINE", 
-    "MESH", 
-    "TEXTURE", 
-    "SET", 
-    "MOVE", 
-    "SCALE", 
-    "ROTATE", 
-    "BASENAME", 
-    "SAVE_KNOBS", 
-    "TWEEN", 
-    "FRAMES", 
-    "VARY", 
-    "PUSH", 
-    "POP", 
-    "SAVE", 
-    "GENERATE_RAYFILES", 
-    "SHADING", 
-    "SHADING_TYPE", 
-    "SET_KNOBS", 
-    "FOCAL", 
-    "DISPLAY", 
-    "SCREEN", 
-    "WEB", 
+    "BOX",
+    "LINE",
+    "MESH",
+    "TEXTURE",
+    "SET",
+    "MOVE",
+    "SCALE",
+    "ROTATE",
+    "BASENAME",
+    "SAVE_KNOBS",
+    "TWEEN",
+    "FRAMES",
+    "VARY",
+    "PUSH",
+    "POP",
+    "SAVE",
+    "GENERATE_RAYFILES",
+    "SHADING",
+    "SHADING_TYPE",
+    "SET_KNOBS",
+    "FOCAL",
+    "DISPLAY",
+    "SCREEN",
+    "WEB",
     "CO"
 )
 
 reserved = {
-    "x" : "XYZ", 
-    "y" : "XYZ", 
-    "z" : "XYZ", 
-    "screen" : "SCREEN", 
+    "x" : "XYZ",
+    "y" : "XYZ",
+    "z" : "XYZ",
+    "screen" : "SCREEN",
     "light" : "LIGHT",
     "constants" : "CONSTANTS",
-    "save_coord_system" : "SAVE_COORDS", 
+    "save_coord_system" : "SAVE_COORDS",
     "camera" : "CAMERA",
     "ambient" : "AMBIENT",
     "torus" : "TORUS",
@@ -197,11 +197,15 @@ def p_command_torus(p):
     commands.append(cmd)
 
 def p_command_box(p):
+    # call from parseimg.py
+    # hardcoded img for now
+    # texture {(u,v): (R,G,B)}
+    #pass in dimensions
     """command : BOX NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
                | BOX NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
                | BOX SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
                | BOX SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
-    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
+    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[], 'texture' : [{},['box',[]]]}
     arg_start = 2
     if isinstance(p[2], str):
         cmd['constants'] = p[2]
@@ -210,6 +214,9 @@ def p_command_box(p):
         cmd['cs'] = p[8]
     if len(p) == 10 and isinstance(p[9], str):
           cmd['cs'] = p[9]
+    # true or false for texture mapping
+    # texture= dict call from parseimg
+    # type: type[0], and then the dimensions
     cmd['args'] = p[arg_start:arg_start+6]
     commands.append(cmd)
 
