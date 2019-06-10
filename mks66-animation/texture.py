@@ -116,6 +116,7 @@ def convert_xy(x0, y0, z0, polygons, i):
                (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]) ]
 
     points.sort(key = lambda x: x[1])
+
     A = [0, 0, 0]
     B = [0, 0, 0]
 
@@ -131,7 +132,9 @@ def convert_xy(x0, y0, z0, polygons, i):
                     [A[1], B[1], 0],
                     [A[2], B[2], 1]])
     m = m.I.getA()
-    v = np.array([ [x0], [y0], [z0]])
+    v = np.array([ [x0 - points[MID][0]],
+                   [y0 - points[MID][1]],
+                   [z0 - points[MID][2]]])
     v = m.dot(v)
 
     return v[0][0],v[1][0]
