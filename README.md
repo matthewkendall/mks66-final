@@ -26,3 +26,4 @@ Texture maps to mesh
 ## TO-DO
 - Make sure (0,0) in top left is what we want for parser
 - Modify @p_command_box in mdl.py
+- Tack on .jpg to texture file in script

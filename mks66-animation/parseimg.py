@@ -69,6 +69,6 @@ Test Area
 #print(str(tiny))
 #print(str(len(tiny))) #rows
 #print(str(len(tiny[0]))) #columns
-print(str(len(getUVDict('tiny.jpeg'))))
+# print(str(getUVDict('TEXTURE.jpg')))
 #print(str(len(get2DPicData('test.jpg')))) # rows
 #print(str(len(get2DPicData('test.jpg')[0]))) #columns

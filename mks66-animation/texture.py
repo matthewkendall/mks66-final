@@ -1,5 +1,6 @@
 import math
 import numpy as np
+from parseimg import *
 
 ## texture is of the form [D, type]
 ## D is a dictionary with all R,G,B pixel values: D = {(u,v) : (R,G,B)}
@@ -78,6 +79,9 @@ def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, texture, polygons,
 
 
 def get_color(u, v, texture):
+    w,h = getPicSize("img/TEXTURE.jpg")
+    u = (int(w * u)*1.0)/w
+    v = (int(h * v)*1.0)/h
     ## CONVERT u -> (int(W * u)*1.0)/W and sim with v
     return texture[COORDS][(u,v)]
 

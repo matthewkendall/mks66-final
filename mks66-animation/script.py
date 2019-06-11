@@ -109,6 +109,9 @@ def run(filename):
     for symbol in symbols:
         print(symbol, symbols[symbol])
 
+    ## STOP here
+    return
+
     view = [0,
             0,
             1];

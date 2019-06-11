@@ -1,4 +1,5 @@
 import lex, yacc
+from parseimg import *
 
 tokens = (
     "STRING",
@@ -205,6 +206,8 @@ def p_command_box(p):
                | BOX NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
                | BOX SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
                | BOX SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
+
+    # print("p:", p[2])
     cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[], 'texture' : [{},['box',[]]]}
     arg_start = 2
     if isinstance(p[2], str):
@@ -382,7 +385,11 @@ def p_web(p):
 
 def p_texture(p):
     "command : TEXTURE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER"
-    symbols[p[2]] = ['texture', p[3:]]
+    # print("symbols:", str(symbols))
+    # print("p:", p)
+    img_name = p[2] + ".jpg"
+    d = getUVDict(img_name)
+    symbols[p[2]] = ['texture', d]
 
 def p_error(p):
     print('SYNTAX ERROR: ' + str(p))
