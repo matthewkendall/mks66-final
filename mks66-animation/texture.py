@@ -12,14 +12,6 @@ texture = [{},[0,0,0]]
 COORDS = 0
 TYPE = 1
 
-# BOT = 0
-# TOP = 1
-# box_prop = {"is_box" : False, "box_num" : -1, "box_dim" : [-1, -1, -1], "box_loc" : -1}
-# box_num = -1
-# box_dim = [-1, -1, -1]
-# is_box = False
-
-
 def texture_scanline_convert(polygons, i, screen, zbuffer, texture):
     flip = False
     BOT = 0
@@ -86,6 +78,7 @@ def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, texture, polygons,
 
 
 def get_color(u, v, texture):
+    ## CONVERT u -> (int(W * u)*1.0)/W and sim with v
     return texture[COORDS][(u,v)]
 
 
