@@ -1,4 +1,5 @@
 from display import *
+from gmath import *
 import math
 import numpy as np
 from parseimg import *
@@ -25,7 +26,7 @@ correct_box_perms = [ # TOP (1) BOT (2) triangles
     [0,2,1], [2,1,0], # bottom: 7 (DONE)
 ]
 
-def texture_scanline_convert(polygons, i, screen, zbuffer, texture):
+def texture_scanline_convert(polygons, i, screen, zbuffer, view, ambient, light, normal, texture):
     flip = False
     BOT = 0
     TOP = 2
@@ -60,7 +61,7 @@ def texture_scanline_convert(polygons, i, screen, zbuffer, texture):
             x1 = points[MID][0]
             z1 = points[MID][2]
 
-        texture_scanline_draw(int(x0), z0, int(x1), z1, y, screen, zbuffer, texture, polygons, i)
+        texture_scanline_draw(int(x0), z0, int(x1), z1, y, screen, zbuffer, view, ambient, light, normal, texture, polygons, i)
         x0+= dx0
         z0+= dz0
         x1+= dx1
@@ -70,7 +71,7 @@ def texture_scanline_convert(polygons, i, screen, zbuffer, texture):
 
 # draws scanline in the correct order
 # and retrieves color if necessary
-def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, texture, polygons, i):
+def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, view, ambient, light, normal, texture, polygons, i):
     dist = abs(x1-x0)
     if x0 < x1:
         delta_x = 1
@@ -83,14 +84,14 @@ def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, texture, polygons,
     while dist >= 0:
         # print(x, y, z, polygons, i, texture)
         u,v = get_uv(x, y, z, polygons, i, texture)
-        color = get_color(u, v, texture)
+        color = get_color(u, v, view, ambient, light, normal, texture)
         plot(screen, zbuffer, color, x, y, z)
         x+= delta_x
         z+= delta_z
         dist -= 1
 
 
-def get_color(u, v, texture):
+def get_color(u, v, view, ambient, light, normal, texture):
     global prev_rgb
 
     w,h = getPicSize("TEXTURE.jpg")
@@ -113,11 +114,14 @@ def get_color(u, v, texture):
 
     # dictionary check
     if (u,v) in texture[COORDS]:
-        color = texture[COORDS][(u,v)]
-        # get_lighting(normal, view, ambient, light, symbols, reflect )
-        prev_rgb = color
+        rgb = texture[COORDS][(u,v)]
+        # reflect = { 'red': [rgb[0], 0.5, 0.5],
+        #             'green': [rgb[1], 0.5, 0.5],
+        #             'blue': [rgb[2], 0.5, 0.5]}
+        # color = get_lighting(normal, view, ambient, light, reflect )
+        prev_rgb = rgb
         # print("prev_rgb:", prev_rgb)
-        return color
+        return rgb
     else:
         return prev_rgb
 

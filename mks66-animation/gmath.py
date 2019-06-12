@@ -22,13 +22,17 @@ COLOR = 1
 SPECULAR_EXP = 4
 
 #lighting functions
-def get_lighting(normal, view, ambient, light, symbols, reflect ):
+def get_lighting(normal, view, ambient, light, reflect, symbols=None ):
 
     n = normal[:]
     normalize(n)
     normalize(light[LOCATION])
     normalize(view)
-    r = symbols[reflect][1]
+
+    if symbols:
+        r = symbols[reflect][1]
+    else:
+        r = reflect
 
     a = calculate_ambient(ambient, r)
     d = calculate_diffuse(light, r, n)

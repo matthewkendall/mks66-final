@@ -109,9 +109,9 @@ def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, ref
         # backface culling
         if normal[2] > 0:
             if texture is not None:
-                texture_scanline_convert(polygons, point, screen, zbuffer, texture)
+                texture_scanline_convert(polygons, point, screen, zbuffer, view, ambient, light, normal, texture)
             else:
-                color = get_lighting(normal, view, ambient, light, symbols, reflect )
+                color = get_lighting(normal, view, ambient, light, reflect, symbols)
                 scanline_convert(polygons, point, screen, zbuffer, color)
 
         point+= 3
