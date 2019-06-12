@@ -1,3 +1,4 @@
+from display import *
 import math
 import numpy as np
 from parseimg import *
@@ -69,9 +70,9 @@ def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, texture, polygons,
     delta_z = (z1 - z0) / (x1 - x0 + 1) if (x1 - x0 + 1) != 0 else 0
 
     while dist >= 0:
-        if is_texture:
-            u,v = get_uv(x, y, z, polygons, i, texture)
-            color = get_color(u, v, texture)
+        # print(x, y, z, polygons, i, texture)
+        u,v = get_uv(x, y, z, polygons, i, texture)
+        color = get_color(u, v, texture)
         plot(screen, zbuffer, color, x, y, z)
         x+= delta_x
         z+= delta_z
@@ -79,9 +80,14 @@ def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, texture, polygons,
 
 
 def get_color(u, v, texture):
-    w,h = getPicSize("img/TEXTURE.jpg")
+    w,h = getPicSize("TEXTURE.jpg")
     u = (int(w * u)*1.0)/w
     v = (int(h * v)*1.0)/h
+    # fix for nonzero coordinates
+    if u == 0:
+        u += 2.0 / w
+    if v == 0:
+        v += 2.0 / h
     ## CONVERT u -> (int(W * u)*1.0)/W and sim with v
     return texture[COORDS][(u,v)]
 
@@ -98,7 +104,9 @@ def get_uv(x, y, z, polygons, i, texture):
         u,v = box_convert_uv(x_basis, y_basis, w, h, d, box_pair)
         return u,v
 
-    pass
+    else:
+        print("ERROR!")
+        return None
 
 
 # converts a point in triangle back to standard basis representation

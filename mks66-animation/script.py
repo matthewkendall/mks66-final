@@ -109,8 +109,9 @@ def run(filename):
     for symbol in symbols:
         print(symbol, symbols[symbol])
 
-    ## STOP here
-    return
+    if 'TEXTURE' in symbols.keys():
+        is_texture = True
+        texture_dict = symbols['TEXTURE'][1]
 
     view = [0,
             0,
@@ -172,9 +173,14 @@ def run(filename):
                         args[3], args[4], args[5])
                 matrix_mult( stack[-1], tmp )
                 # if there is a texture, apply it here
-                if is_texture:
+                if is_texture and command['texture']:
+                    print("there is a texture...")
+                    # print("texture[COORDS]:", texture_dict)
+                    # print("texture[TYPE]:", command['texture'])
+                    texture = [texture_dict, command['texture']]
                     draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect, texture)
                 else:
+                    print("there is NO texture...")
                     draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
                 tmp = []
                 reflect = '.white'

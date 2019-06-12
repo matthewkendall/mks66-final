@@ -13,9 +13,13 @@ Team Malleks
   - Phase 2: Cylinder
   - Phase 3: Sphere
 
+## Important Information
 
-## Required Packages
+### Required Packages
 numpy: for inverse matrices
+
+### Other
+- All textures currently need to be named TEXUTRE
 
 ## Language
 python3

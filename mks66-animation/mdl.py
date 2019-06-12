@@ -208,10 +208,15 @@ def p_command_box(p):
                | BOX SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
 
     # print("p:", p[2])
-    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[], 'texture' : [{},['box',[]]]}
+    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[], 'texture' : None}
     arg_start = 2
     if isinstance(p[2], str):
-        cmd['constants'] = p[2]
+        ## modify this parsing code if you want
+        if p[2] == "TEXTURE":
+            # only pass in the texture[TYPE]
+            cmd['texture'] = ['box', p[6], p[7], p[8]]
+        else:
+            cmd['constants'] = p[2]
         arg_start = 3
     if len(p) == 9 and isinstance(p[8], str):
         cmd['cs'] = p[8]
