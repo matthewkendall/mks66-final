@@ -122,21 +122,32 @@ def add_box( polygons, x, y, z, width, height, depth ):
     y1 = y - height
     z1 = z - depth
 
+    # origin is the middle coordinate of add_polygon
+    # A = polygons[i] - polygons[i+1]
+    # B = polygons[i+2] - polygons[i+1]
+
+    # CORRECT
     #front: 1
     add_polygon(polygons, x, y, z, x1, y1, z, x1, y, z) # TOP
     add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z) # BOT
+
+    # NOT SURE IF CORRECT
     #back: 9
     add_polygon(polygons, x1, y, z1, x, y1, z1, x, y, z1) # TOP
     add_polygon(polygons, x1, y, z1, x1, y1, z1, x, y1, z1) # BOT
+
     #right side: 6
     add_polygon(polygons, x1, y, z, x1, y1, z1, x1, y, z1) # TOP AND FLIP
     add_polygon(polygons, x1, y, z, x1, y1, z, x1, y1, z1) # BOT AND FLIP
+
     #left side: 4
     add_polygon(polygons, x, y, z1, x, y1, z, x, y, z) # TOP AND FLIP
     add_polygon(polygons, x, y, z1, x, y1, z1, x, y1, z) # BOT AND FLIP
+
     #top: 5
     add_polygon(polygons, x, y, z1, x1, y, z, x1, y, z1) # TOP
     add_polygon(polygons, x, y, z1, x, y, z, x1, y, z) # BOT
+
     #bottom: 7
     add_polygon(polygons, x, y1, z, x1, y1, z1, x1, y1, z) # TOP
     add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z1) # BOT
