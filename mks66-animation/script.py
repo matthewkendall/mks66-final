@@ -114,7 +114,7 @@ def run(filename):
         is_texture = True
         texture_dict = symbols['TEXTURE'][1]
         print("found texure in symbols...")
-        # print("texture_dict:", texture_dict)
+        # print("texture_dict:", texture_dict.keys())
 
     view = [0,
             0,

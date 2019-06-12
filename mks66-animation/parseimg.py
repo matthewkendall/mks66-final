@@ -52,9 +52,13 @@ def getUVDict(img_file):
     for r in range(height): #tracking row currently on
         #print(str(r))
         for c in range(width): #tracking column currently on
-            uv=((r+1)/height,(c+1)/width)
+            uv=[(c+1.0)/width,1.0-(r+1.0)/height]
+            # truncation process
+            uv[0] = (int(width * uv[0])*1.0)/width
+            uv[1] = (int(height * uv[1])*1.0)/height
+            u,v = uv[0],uv[1]
             #print(str(uv))
-            uv_dict[uv]= dPixels[r-1][c-1]
+            uv_dict[(u,v)]= dPixels[r-1][c-1]
 
     return uv_dict
 
@@ -69,6 +73,6 @@ Test Area
 #print(str(tiny))
 #print(str(len(tiny))) #rows
 #print(str(len(tiny[0]))) #columns
-# print(str(getUVDict('TEXTURE.jpg')))
+# print(str(len(getUVDict('TEXTURE.jpg'))))
 #print(str(len(get2DPicData('test.jpg')))) # rows
 #print(str(len(get2DPicData('test.jpg')[0]))) #columns

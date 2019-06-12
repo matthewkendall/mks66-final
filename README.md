@@ -32,4 +32,3 @@ Texture maps to mesh
 - Tack on .jpg to texture file in script
 - FLIP (u,v) in parseimg.py
   - x coord currently NOT WORKING
-- FIX (u,v) negative error

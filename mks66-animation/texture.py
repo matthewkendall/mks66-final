@@ -14,13 +14,15 @@ texture = [{},[0,0,0]]
 COORDS = 0
 TYPE = 1
 
+prev_rgb = [0,0,0] # previous RGB value in case dictionary key isnt there
+
 correct_box_perms = [ # TOP (1) BOT (2) triangles
     [0,2,1], [2,1,0], # front: 1 (DONE)
     [0,2,1], [2,1,0], # back: 9 (DONE)
     [0,2,1], [2,1,0], # right side: 6 (DONE)
     [0,2,1], [2,1,0], # left side: 4 (DONE)
     [0,2,1], [2,1,0], # top: 5 (DONE)
-    [0,2,1], [2,1,0], # bottom: 7
+    [0,2,1], [2,1,0], # bottom: 7 (DONE)
 ]
 
 def texture_scanline_convert(polygons, i, screen, zbuffer, texture):
@@ -89,6 +91,8 @@ def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, texture, polygons,
 
 
 def get_color(u, v, texture):
+    global prev_rgb
+
     w,h = getPicSize("TEXTURE.jpg")
     # print("(u,v,w,h)=(%f,%f,%d,%d)" % (u,v,w,h))
     u = (int(w * u)*1.0)/w
@@ -97,10 +101,26 @@ def get_color(u, v, texture):
     if u == 0:
         # print("SPECIAL CASE")
         u += 1.0 / w
+    # if u == 1:
+    #     # print("SPECIAL CASE")
+    #     u -= 1.0 / w
     if v == 0:
         # print("SPECIAL CASE")
         v += 1.0 / h
-    return texture[COORDS][(u,v)]
+    # if v == 1:
+    #     # print("SPECIAL CASE")
+    #     v -= 1.0 / h
+
+    # dictionary check
+    if (u,v) in texture[COORDS]:
+        color = texture[COORDS][(u,v)]
+        # get_lighting(normal, view, ambient, light, symbols, reflect )
+        prev_rgb = color
+        # print("prev_rgb:", prev_rgb)
+        return color
+    else:
+        return prev_rgb
+
 
 
 
@@ -237,12 +257,23 @@ def box_convert_uv(x, y, w, h, d, box_pair):
         if box_loc == TOP:
             x = 1-x
             y = 1-y
+        # test code
+        if box_num == 7:
+            x = 1-x
+        elif box_num == 9:
+            x = 1-x
+            y = 1-y
     elif box_num in {4,6}:
         # reflect about x=1/2
-        x = 1-x
+        # x = 1-x
         if box_loc == TOP:
             x = 1-x
             y = 1-y
+        # test code
+        if box_num == 6:
+            x,y = 1-y,x
+        else:
+            x,y = y, 1-x
     else:
         return "Not correct box number (%d) % (box_num)"
 
