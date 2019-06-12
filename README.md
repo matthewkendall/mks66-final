@@ -14,12 +14,11 @@ Team Malleks
   - Phase 3: Sphere
 
 ## Important Information
+- All textures currently need to be named TEXUTRE
+- All textures need to have nice pixel dimensions: (multiple of 50 x multiple of 50)
 
 ### Required Packages
 numpy: for inverse matrices
-
-### Other
-- All textures currently need to be named TEXUTRE
 
 ## Language
 python3
@@ -31,3 +30,5 @@ Texture maps to mesh
 - Make sure (0,0) in top left is what we want for parser
 - Modify @p_command_box in mdl.py
 - Tack on .jpg to texture file in script
+- FLIP (u,v) in parseimg.py
+- (u,v) negative error

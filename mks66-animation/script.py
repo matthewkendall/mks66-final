@@ -102,16 +102,19 @@ def run(filename):
     else:
         print( "Parsing failed.")
         return
-    print("COMMANDS")
-    for command in commands:
-        print(command)
-    print("SYMBOLS")
-    for symbol in symbols:
-        print(symbol, symbols[symbol])
+
+    # print("COMMANDS")
+    # for command in commands:
+    #     print(command)
+    # print("SYMBOLS")
+    # for symbol in symbols:
+        # print(symbol, symbols[symbol])
 
     if 'TEXTURE' in symbols.keys():
         is_texture = True
         texture_dict = symbols['TEXTURE'][1]
+        print("found texure in symbols...")
+        # print("texture_dict:", texture_dict)
 
     view = [0,
             0,
@@ -167,7 +170,6 @@ def run(filename):
             if c == 'box':
                 if command['constants']:
                     reflect = command['constants']
-                    # texture = command['texture']
                 add_box(tmp,
                         args[0], args[1], args[2],
                         args[3], args[4], args[5])
