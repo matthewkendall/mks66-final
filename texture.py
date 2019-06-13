@@ -14,6 +14,7 @@ from parseimg import *
 texture = [{},[0,0,0]]
 COORDS = 0
 TYPE = 1
+NAME = 2
 
 prev_rgb = [0,0,0] # previous RGB value in case dictionary key isnt there
 
@@ -93,8 +94,9 @@ def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, view, ambient, lig
 
 def get_color(u, v, view, ambient, light, normal, texture):
     global prev_rgb
+    img_name = texture[NAME] + ".jpg"
 
-    w,h = getPicSize("TEXTURE.jpg")
+    w,h = getPicSize(img_name)
     # print("(u,v,w,h)=(%f,%f,%d,%d)" % (u,v,w,h))
     u = (int(w * u)*1.0)/w
     v = (int(h * v)*1.0)/h

@@ -212,11 +212,15 @@ def p_command_box(p):
     arg_start = 2
     if isinstance(p[2], str):
         ## modify this parsing code if you want
-        if p[2] == "TEXTURE":
-            # only pass in the texture[TYPE]
-            cmd['texture'] = ['box', p[6], p[7], p[8]]
-        else:
+        if p[2] in symbols:
+            if symbols[p[2]][0] == "texture":
+                cmd['texture'] = ['box', p[6], p[7], p[8]]
             cmd['constants'] = p[2]
+        # if p[2] == "TEXTURE":
+        #     # only pass in the texture[TYPE]
+        #     cmd['texture'] = ['box', p[6], p[7], p[8]]
+        # else:
+        #     cmd['constants'] = p[2]
         arg_start = 3
     if len(p) == 9 and isinstance(p[8], str):
         cmd['cs'] = p[8]
