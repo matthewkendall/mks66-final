@@ -29,3 +29,13 @@ texture NAME 0 0 0 0 0 0 0 0 0 0 0 0
 
 If you want to apply texture NAME to a box, add it as the second argument in the script, for example:
 box NAME 0 0 0 200 200 200
+
+## The mapping
+The picture below shows the layout of a cube, where the six faces drawn in pen are the ones on the cube.
+![](img/mapping.png)
+Face 1: front,
+Face 9: back,
+Face 5: top,
+Face 7: bottom,
+Face 4: right,
+Face 6: left
