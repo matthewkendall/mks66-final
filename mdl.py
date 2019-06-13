@@ -198,37 +198,23 @@ def p_command_torus(p):
     commands.append(cmd)
 
 def p_command_box(p):
-    # call from parseimg.py
-    # hardcoded img for now
-    # texture {(u,v): (R,G,B)}
-    #pass in dimensions
     """command : BOX NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
                | BOX NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
                | BOX SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
                | BOX SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
 
-    # print("p:", p[2])
     cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[], 'texture' : None}
     arg_start = 2
     if isinstance(p[2], str):
-        ## modify this parsing code if you want
         if p[2] in symbols:
             if symbols[p[2]][0] == "texture":
                 cmd['texture'] = ['box', p[6], p[7], p[8]]
             cmd['constants'] = p[2]
-        # if p[2] == "TEXTURE":
-        #     # only pass in the texture[TYPE]
-        #     cmd['texture'] = ['box', p[6], p[7], p[8]]
-        # else:
-        #     cmd['constants'] = p[2]
         arg_start = 3
     if len(p) == 9 and isinstance(p[8], str):
         cmd['cs'] = p[8]
     if len(p) == 10 and isinstance(p[9], str):
           cmd['cs'] = p[9]
-    # true or false for texture mapping
-    # texture= dict call from parseimg
-    # type: type[0], and then the dimensions
     cmd['args'] = p[arg_start:arg_start+6]
     commands.append(cmd)
 
@@ -394,8 +380,6 @@ def p_web(p):
 
 def p_texture(p):
     "command : TEXTURE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER"
-    # print("symbols:", str(symbols))
-    # print("p:", p)
     img_name = p[2] + ".jpg"
     d = getUVDict(img_name)
     symbols[p[2]] = ['texture', d]

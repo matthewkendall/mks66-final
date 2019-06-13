@@ -90,11 +90,6 @@ def run(filename):
     This function runs an mdl script
     """
     is_texture = False
-    # figure out some sort of way to convert texture
-    # into texture_pixels = { (u,v) : (R,G,B) } form
-    # add a boolean is_texture that is true if we do this
-        # texture TEXTURE.png added as a command
-        # is_texture = True
     p = mdl.parseFile(filename)
 
     if p:

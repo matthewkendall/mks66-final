@@ -95,34 +95,19 @@ def texture_scanline_draw(x0, z0, x1, z1, y, screen, zbuffer, view, ambient, lig
 def get_color(u, v, view, ambient, light, normal, texture):
     global prev_rgb
     img_name = texture[NAME] + ".jpg"
-
     w,h = getPicSize(img_name)
     # print("(u,v,w,h)=(%f,%f,%d,%d)" % (u,v,w,h))
     u = (int(w * u)*1.0)/w
     v = (int(h * v)*1.0)/h
     # fix for nonzero coordinates
     if u == 0:
-        # print("SPECIAL CASE")
         u += 1.0 / w
-    # if u == 1:
-    #     # print("SPECIAL CASE")
-    #     u -= 1.0 / w
     if v == 0:
-        # print("SPECIAL CASE")
         v += 1.0 / h
-    # if v == 1:
-    #     # print("SPECIAL CASE")
-    #     v -= 1.0 / h
-
     # dictionary check
     if (u,v) in texture[COORDS]:
         rgb = texture[COORDS][(u,v)]
-        # reflect = { 'red': [rgb[0], 0.5, 0.5],
-        #             'green': [rgb[1], 0.5, 0.5],
-        #             'blue': [rgb[2], 0.5, 0.5]}
-        # color = get_lighting(normal, view, ambient, light, reflect )
         prev_rgb = rgb
-        # print("prev_rgb:", prev_rgb)
         return rgb
     else:
         return prev_rgb

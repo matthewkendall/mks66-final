@@ -21,24 +21,6 @@ def draw_scanline(x0, z0, x1, z1, y, screen, zbuffer, color):
         z+= delta_z
         dist -= 1
 
-# def draw_scanline(x0, z0, x1, z1, y, screen, zbuffer, color):
-#     if x0 > x1:
-#         tx = x0
-#         tz = z0
-#         x0 = x1
-#         z0 = z1
-#         x1 = tx
-#         z1 = tz
-#
-#     x = x0
-#     z = z0
-#     delta_z = (z1 - z0) / (x1 - x0 + 1) if (x1 - x0 + 1) != 0 else 0
-#
-#     while x <= x1:
-#         plot(screen, zbuffer, color, x, y, z)
-#         x+= 1
-#         z+= delta_z
-
 def scanline_convert(polygons, i, screen, zbuffer, color):
     flip = False
     BOT = 0
@@ -48,12 +30,6 @@ def scanline_convert(polygons, i, screen, zbuffer, color):
     points = [ (polygons[i][0], polygons[i][1], polygons[i][2]),
                (polygons[i+1][0], polygons[i+1][1], polygons[i+1][2]),
                (polygons[i+2][0], polygons[i+2][1], polygons[i+2][2]) ]
-
-    # alas random color, we hardly knew ye
-    #color = [0,0,0]
-    #color[RED] = (23*(i/3)) %256
-    #color[GREEN] = (109*(i/3)) %256
-    #color[BLUE] = (227*(i/3)) %256
 
     points.sort(key = lambda x: x[1])
     x0 = points[BOT][0]
@@ -80,15 +56,12 @@ def scanline_convert(polygons, i, screen, zbuffer, color):
             x1 = points[MID][0]
             z1 = points[MID][2]
 
-        # look into the difference
-        # draw_line(int(x0), y, z0, int(x1), y, z1, screen, zbuffer, color)
         draw_scanline(int(x0), z0, int(x1), z1, y, screen, zbuffer, color)
         x0+= dx0
         z0+= dz0
         x1+= dx1
         z1+= dz1
         y+= 1
-
 
 
 def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
@@ -122,11 +95,6 @@ def add_box( polygons, x, y, z, width, height, depth ):
     y1 = y - height
     z1 = z - depth
 
-    # origin is the middle coordinate of add_polygon
-    # A = polygons[i] - polygons[i+1]
-    # B = polygons[i+2] - polygons[i+1]
-
-    # CORRECT
     #front: 1
     add_polygon(polygons, x, y, z, x1, y1, z, x1, y, z) # TOP
     add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z) # BOT
