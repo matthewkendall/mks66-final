@@ -1,6 +1,5 @@
-## fix this when you can
-test: face.mdl lex.py main.py matrix.py mdl.py display.py draw.py gmath.py yacc.py
-	python main.py simple_anim.mdl
+all: blocks.mdl lex.py main.py matrix.py mdl.py display.py draw.py gmath.py yacc.py parseimg.py texture.py
+	python3 main.py blocks.mdl
 
 clean:
 	rm *pyc *out parsetab.py
