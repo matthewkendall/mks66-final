@@ -13,15 +13,15 @@ Team Malleks
   - Animation allowed
 
 ## Important Information
-- Texture files MUST be .jpg files and MUST be located in the img directory
+- Texture files MUST be .jpg or .jpeg files and MUST be located in the img directory
 - All textures need to have nice pixel dimensions: (multiple of 50 x multiple of 50)
 
 ### Language
 python3
 
 ### Required Packages
-numpy: for inverse matrices
-PIL: for parsing image files
+- numpy: used for inverse matrices.
+- PIL (pillow): used for parsing image files and constructing the associated u,v dictionary necessary for mapping.
 
 ### Script Format
 In the script, there must be the following line if there is a texture:
@@ -29,6 +29,7 @@ texture NAME 0 0 0 0 0 0 0 0 0 0 0 0
 
 If you want to apply texture NAME to a box, add it as the second argument in the script, for example:
 box NAME 0 0 0 200 200 200
+
 
 ## The mapping
 The picture below shows the layout of a cube, where the six faces drawn in pen are the ones on the cube.
